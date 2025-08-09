@@ -15,8 +15,9 @@ public class RelationManager<CE> {
 
   private List<BaseRelation<CE, ?>> relationList = new ArrayList<>();
 
-  public <RE> void addRelation(BaseRelation<CE, RE> relation) {
+  public <RE> RelationManager<CE> addRelation(BaseRelation<CE, RE> relation) {
     this.relationList.add(relation);
+    return this;
   }
 
   public void fillCompositeData(CE composite) {

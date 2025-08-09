@@ -18,13 +18,13 @@
 
     List<OrderComposite> orderComposites = Arrays.asList(orderComposite, orderComposite2, orderComposite3);
 
-    OneToOne<OrderComposite, OrderAddressEntity> orderAddressRelation = new OneToOne<>(
+    HasOne<OrderComposite, OrderAddressEntity> orderAddressRelation = new HasOne<>(
             OrderComposite::setOrderAddress,
             orderAddressMapper,
             OrderComposite::getOrderId,
             OrderAddressEntity::getOrderId);
 
-    OneToMany<OrderComposite, OrderProductComposite> orderProductsRelation = new OneToMany<>(
+    HasMany<OrderComposite, OrderProductComposite> orderProductsRelation = new HasMany<>(
             OrderComposite::setOrderProducts,
             orderProductCompositeMapper,
             OrderComposite::getOrderId,
@@ -37,7 +37,7 @@
 	
 	//关联orderProducts的子表
 	orderProductsRelation.addRelation(
-		new OneToMany<>(
+		new HasMany<>(
             OrderProductComposite::setOrderProductDiscounts,
             orderProductDiscountMapper,
             OrderProductComposite::getOrderProductId,
@@ -57,8 +57,8 @@
 ```java
 public interface OrderCompositeMapper extend BaseMapper<OrderComposite> {
 
-   default OneToMany<OrderComposite, OrderProductComposite> withOrderProducts() {
-      return new OneToMany<>(
+   default HasMany<OrderComposite, OrderProductComposite> withOrderProducts() {
+      return new HasMany<>(
               OrderComposite::setOrderProducts,
               SpringContextUtils.getBean(OrderProductCompositeMapper.class),
               OrderComposite::getOrderId,

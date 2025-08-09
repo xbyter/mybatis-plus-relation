@@ -3,27 +3,28 @@ package app.extensions;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
- *
- * @param <CE> CompositeEntity
- * @param <RE> RelationEntity
+ * 一对多, 比如一个订单(id)有多个订单产品(order_id)
+ * @param <CE> CompositeEntity 订单
+ * @param <RE> RelationEntity 订单产品
  */
 @Data
-public class OneToMany<CE, RE> extends BaseRelation<CE, RE> {
+public class HasMany<CE, RE> extends BaseRelation<CE, RE> {
 
-  private BiConsumer<CE, List<RE>> setter;
+  protected BiConsumer<CE, List<RE>> setter;
 
-  private BaseMapper<RE> relationMapper;
+  protected BaseMapper<RE> relationMapper;
 
-  private SFunction<CE, ?> selfKey;
+  protected SFunction<CE, ?> selfKey;
 
-  private SFunction<RE, ?> relationKey;
+  protected SFunction<RE, ?> relationKey;
 
-  public OneToMany(BiConsumer<CE, List<RE>> setter, BaseMapper<RE> relationMapper, SFunction<CE, ?> selfKey, SFunction<RE, ?> relationKey) {
+  public HasMany(BiConsumer<CE, List<RE>> setter, BaseMapper<RE> relationMapper, SFunction<CE, ?> selfKey, SFunction<RE, ?> relationKey) {
     this.setter = setter;
     this.relationMapper = relationMapper;
     this.selfKey = selfKey;

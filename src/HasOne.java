@@ -8,22 +8,22 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
- *
- * @param <CE> CompositeEntity
- * @param <RE> RelationEntity
+ * 一对一关联关系, 比如一个订单(id)有一个地址(order_id)
+ * @param <CE> CompositeEntity 订单
+ * @param <RE> RelationEntity 订单地址
  */
 @Data
-public class OneToOne<CE, RE> extends BaseRelation<CE, RE> {
+public class HasOne<CE, RE> extends BaseRelation<CE, RE> {
 
-  private BiConsumer<CE, RE> setter;
+  protected BiConsumer<CE, RE> setter;
 
-  private BaseMapper<RE> relationMapper;
+  protected BaseMapper<RE> relationMapper;
 
-  private SFunction<CE, ?> selfKey;
+  protected SFunction<CE, ?> selfKey;
 
-  private SFunction<RE, ?> relationKey;
+  protected SFunction<RE, ?> relationKey;
 
-  public OneToOne(BiConsumer<CE, RE> setter, BaseMapper<RE> relationMapper, SFunction<CE, ?> selfKey, SFunction<RE, ?> relationKey) {
+  public HasOne(BiConsumer<CE, RE> setter, BaseMapper<RE> relationMapper, SFunction<CE, ?> selfKey, SFunction<RE, ?> relationKey) {
     this.setter = setter;
     this.relationMapper = relationMapper;
     this.selfKey = selfKey;
