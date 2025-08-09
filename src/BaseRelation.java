@@ -32,7 +32,7 @@ public abstract class BaseRelation<CE, RE> {
   public abstract SFunction<RE, ?> getRelationKey();
 
   protected List<RE> getRelationDataList(List<CE> compositeList) {
-    List<Object> selfKeyValueList = compositeList.stream().map(getSelfKey()).collect(Collectors.toList());
+    List<Object> selfKeyValueList = compositeList.stream().map(getSelfKey()).distinct().collect(Collectors.toList());
     if (CollectionUtils.isEmpty(selfKeyValueList)) {
       return new ArrayList<>();
     }
