@@ -71,6 +71,10 @@ public abstract class BaseRelation<CE, RE> {
   }
 
   public void fillCompositeData(List<CE> compositeList) {
+    if (CollectionUtils.isEmpty(compositeList)) {
+      return;
+    }
+
     //查询关联数据
     List<RE> relationDataList = getRelationDataList(compositeList);
     Map<Object, List<RE>> subMap = toRelationDataMap(relationDataList);

@@ -21,6 +21,9 @@ public class RelationManager<CE> {
   }
 
   public void fillCompositeData(CE composite) {
+    if (composite == null) {
+      return;
+    }
     fillCompositeData(Collections.singletonList(composite));
   }
 
