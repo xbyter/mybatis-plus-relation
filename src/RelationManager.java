@@ -1,6 +1,7 @@
 package app.extensions;
 
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,10 +11,10 @@ import java.util.List;
  *
  * @param <CE> CompositeEntity
  */
-@Data
+@Getter
 public class RelationManager<CE> {
 
-  private List<BaseRelation<CE, ?>> relationList = new ArrayList<>();
+  private final List<BaseRelation<CE, ?>> relationList = new ArrayList<>();
 
   public <RE> RelationManager<CE> addRelation(BaseRelation<CE, RE> relation) {
     this.relationList.add(relation);

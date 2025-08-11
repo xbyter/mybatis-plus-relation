@@ -32,24 +32,38 @@ public abstract class BaseRelation<CE, RE> {
   public abstract SFunction<RE, ?> getRelationKey();
 
   protected List<RE> getRelationDataList(List<CE> compositeList) {
+    //收集键
     List<Object> selfKeyValueList = compositeList.stream().map(getSelfKey()).distinct().collect(Collectors.toList());
     if (CollectionUtils.isEmpty(selfKeyValueList)) {
       return new ArrayList<>();
     }
 
-    LambdaQueryWrapper<RE> queryWrapper = new LambdaQueryWrapper<>();
-    queryWrapper.in(getRelationKey(), selfKeyValueList);
-    //附加查询条件
-    if (queryWrapperConsumer != null) {
-      queryWrapperConsumer.accept(queryWrapper);
-    }
+    //查询关联表
+    List<RE> result = new ArrayList<>();
+    //关联键分批查询数量
+    int batchSize = 500;
+    for (int i = 0; i < selfKeyValueList.size(); i += batchSize) {
+      // 截取当前批次
+      List<Object> batchKeys = selfKeyValueList.subList(i, Math.min(i + batchSize, selfKeyValueList.size()));
 
-    return this.getRelationMapper().selectList(queryWrapper);
+      // 构建当前批次的查询条件
+      LambdaQueryWrapper<RE> queryWrapper = new LambdaQueryWrapper<>();
+      queryWrapper.in(getRelationKey(), batchKeys);
+
+      // 附加额外查询条件
+      if (queryWrapperConsumer != null) {
+        queryWrapperConsumer.accept(queryWrapper);
+      }
+
+      // 执行查询并累加结果
+      result.addAll(this.getRelationMapper().selectList(queryWrapper));
+    }
+    return result;
   }
 
   protected Map<Object, List<RE>> toRelationDataMap(List<RE> relationDataList) {
     if (CollectionUtils.isEmpty(relationDataList)) {
-      return null;
+      return Collections.emptyMap();
     }
     return relationDataList.stream()
             .collect(Collectors.groupingBy(getRelationKey()));
