@@ -1,4 +1,5 @@
 # mybatis-plus-relation
+mybatis-plus关联查询解决方案, 代码实现简单, 已线上验证. 
 无需写SQL就可以实现关联子查询(支持嵌套, 避免N+1查询, 每个关联只查询一次), 类似Laravel的with方法.
 
 ## 使用示例
